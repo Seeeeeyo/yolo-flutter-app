@@ -167,6 +167,29 @@ class _MyAppState extends State<MyApp> {
     return ImageClassifier(model: model);
   }
 
+  Future<ImageClassifier> _initPoseEstimatorWithLocalModel() async {
+    final modelPath = await _copy('assets/yolov8-pose.mlmodel');
+    final model = LocalYoloModel(
+      id: '',
+      task: Task.pose,
+      format: Format.coreml,
+      modelPath: modelPath,
+    );
+
+    // final modelPath = await _copy('assets/yolov8n-cls.bin');
+    // final paramPath = await _copy('assets/yolov8n-cls.param');
+    // final metadataPath = await _copy('assets/metadata-cls.yaml');
+    // final model = LocalYoloModel(
+    //   id: '',
+    //   task: Task.classify,
+    //   modelPath: modelPath,
+    //   paramPath: paramPath,
+    //   metadataPath: metadataPath,
+    // );
+
+    return ImageClassifier(model: model);
+  }
+
   Future<String> _copy(String assetPath) async {
     final path = '${(await getApplicationSupportDirectory()).path}/$assetPath';
     await io.Directory(dirname(path)).create(recursive: true);
